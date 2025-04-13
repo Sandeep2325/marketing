@@ -53,7 +53,13 @@ export default function Home() {
             </div>
             <div className="flex items-center space-x-4">
               <Link
-                href="/telemarketing"
+                href="/payment"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
+              >
+                Payment
+              </Link>
+              <Link
+                href="/signup"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
                 Get Started
@@ -248,18 +254,18 @@ export default function Home() {
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
               <Link
-                href="/telemarketing"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50"
+                href="/payment"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
               >
-                Get started
+                Subscribe Now
               </Link>
             </div>
             <div className="ml-3 inline-flex rounded-md shadow">
               <Link
-                href="#features"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-400"
+                href="/signup"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50"
               >
-                Learn more
+                Get Started
               </Link>
             </div>
           </div>

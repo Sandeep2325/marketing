@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 
 const plans = [
   {
@@ -39,14 +38,8 @@ const plans = [
 
 export default function Payment() {
   const router = useRouter();
-  const { data: session } = useSession();
   const [selectedPlan, setSelectedPlan] = useState('pro');
   const [loading, setLoading] = useState(false);
-
-  if (!session) {
-    router.push('/signin');
-    return null;
-  }
 
   const handleSubscribe = async () => {
     setLoading(true);
