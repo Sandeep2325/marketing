@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String?
+  phoneNumbers  UserPhoneNumber[]
+  emails        UserEmail[]
+  campaigns     Campaign[]
+  contacts      Contact[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model UserPhoneNumber {
+  id          String   @id @default(cuid())
+  userId      String
+  phoneNumber String
+  type        String   // "telemarketing" or "sms"
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, type])
+}
+
+model UserEmail {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId])
+}
+
+model Campaign {
+  id          String    @id @default(cuid())
+  userId      String
+  type        String    // "telemarketing", "sms", "email", "video"
+  name        String
+  status      String    // "draft", "active", "completed", "failed"
+  contacts    Contact[]
+  messages    Message[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model Contact {
+  id          String    @id @default(cuid())
+  userId      String
+  campaignId  String?
+  name        String?
+  phoneNumber String?
+  email       String?
+  status      String    // "active", "unsubscribed", "bounced"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  campaign    Campaign? @relation(fields: [campaignId], references: [id])
+}
+
+model Message {
+  id          String   @id @default(cuid())
+  campaignId  String
+  content     String
+  type        String   // "text", "audio", "video", "email"
+  status      String   // "pending", "sent", "delivered", "failed"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  campaign    Campaign @relation(fields: [campaignId], references: [id])
+} 
