@@ -1,18 +1,21 @@
 import { Model, DataTypes, ModelStatic, ModelAttributes, ModelOptions } from 'sequelize';
 import { Models, ModelDefinition } from './types';
+import { sequelize } from './index';
 
-interface UserAttributes {
-  id: string;
+export interface UserAttributes {
+  id: number;
   email: string;
   name?: string;
+  password: string;
+  subscriptionPlan?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
 
 const attributes: ModelAttributes = {
   id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   email: {
@@ -24,6 +27,22 @@ const attributes: ModelAttributes = {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  subscriptionPlan: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
 };
 
 const options: ModelOptions = {
@@ -33,11 +52,13 @@ const options: ModelOptions = {
 
 export default (sequelize: any) => {
   class User extends Model<UserAttributes> implements UserAttributes {
-    declare id: string;
-    declare email: string;
-    declare name?: string;
-    declare readonly createdAt: Date;
-    declare readonly updatedAt: Date;
+    public id!: number;
+    public email!: string;
+    public name?: string;
+    public password!: string;
+    public subscriptionPlan?: string | null;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 
     static associate(models: Models) {
       User.hasMany(models.UserPhoneNumber, { foreignKey: 'userId' });
